@@ -1,5 +1,6 @@
 package ar.edu.davinci.dvds20202cg1.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -33,7 +34,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 
-public class Prenda {
+public class Prenda implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5370760060743457791L;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
