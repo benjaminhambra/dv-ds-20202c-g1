@@ -27,32 +27,37 @@ import lombok.NoArgsConstructor;
  */
 
 @Entity
-@Table(name="prendas")
+@Table(name = "prendas")
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public class Prenda implements Serializable {
 
-public class Prenda implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5370760060743457791L;
+	private static final long serialVersionUID = -302068569401023487L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
-    @Column(name = "prd_id")
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
+	@Column(name = "prd_id")
+	private Long id;
+	// private Estado estado;
 
-    @Column(name = "prd_precio_base")
-    private BigDecimal precioBase;
-    
-    @Column(name = "prd_tipo_prenda")
-    @Enumerated(EnumType.STRING)
-    private TipoPrenda tipo;
-    
-    @Column(name = "prd_description")
-    private String descripcion;
+	@Column(name = "prd_precio_base")
+	private BigDecimal precioBase;
+
+	@Column(name = "prd_tipo_prenda")
+	@Enumerated(EnumType.STRING)
+	private TipoPrenda tipo;
+
+	@Column(name = "prd_descripcion")
+	private String descripcion;
+
+	public BigDecimal getPrecioFinal() {
+		return precioBase; // estado.precioFinal(precioPropio);
+	}
 }
