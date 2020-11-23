@@ -12,16 +12,12 @@ class PrendaTest {
 	void testBuilder() {
 		
 		//Given
-		
 		Long id = 1L;
 		String camisa = "Camisa";
 		TipoPrenda tipo = TipoPrenda.CAMISA;
 		BigDecimal precio = new BigDecimal(10.2D);
 		
 		//When
-		
-		//Then
-		
 		Prenda prenda = Prenda.builder()
 				.id(id)
 				.descripcion(camisa)
@@ -29,11 +25,12 @@ class PrendaTest {
 				.precioBase(precio)
 				.build();
 		
+		//Then		
 		assertNotNull(prenda);
 		assertEquals(id, prenda.getId());
 		assertEquals(camisa, prenda.getDescripcion());
 		assertEquals(tipo, prenda.getTipo());
-		assertEquals(precio, prenda.getPrecioBase());
+		assertEquals(precio, prenda.getPrecioBase() );
 	}
 
 }
