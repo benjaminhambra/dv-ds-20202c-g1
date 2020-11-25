@@ -1,11 +1,11 @@
 package ar.edu.davinci.dvds20202cg1.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping(path="/tienda")
+@RestController
+@RequestMapping(path="/tienda/api")
 public abstract class TiendaAppRest {
 
-	//http://localhost:8091/tienda
+	//http://localhost:8091/tienda/api
 }
