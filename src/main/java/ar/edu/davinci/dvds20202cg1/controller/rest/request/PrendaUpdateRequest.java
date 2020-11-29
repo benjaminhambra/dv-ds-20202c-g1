@@ -16,7 +16,7 @@ public class PrendaUpdateRequest {
     
     private BigDecimal precioBase;
     
-    private TipoPrenda tipo;
+    private String tipo;
     
     private String descripcion;
 
