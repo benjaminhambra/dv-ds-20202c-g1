@@ -11,7 +11,6 @@ import ar.edu.davinci.dvds20202cg1.controller.rest.request.PrendaInsertRequest;
 import ar.edu.davinci.dvds20202cg1.controller.rest.request.PrendaUpdateRequest;
 import ar.edu.davinci.dvds20202cg1.controller.rest.response.PrendaResponse;
 import ar.edu.davinci.dvds20202cg1.model.Prenda;
-import ar.edu.davinci.dvds20202cg1.model.TipoPrenda;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;

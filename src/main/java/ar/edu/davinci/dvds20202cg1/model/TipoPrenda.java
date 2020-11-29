@@ -3,10 +3,6 @@ package ar.edu.davinci.dvds20202cg1.model;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Tipo de Prendas
- */
-
 public enum TipoPrenda {
 
 	SACO("Saco"),

@@ -68,7 +68,6 @@ public class PrendaServiceImpl implements PrendaService {
 
 	@Override
 	public List<TipoPrenda> getTipoPrendas() {
-		
 		return TipoPrenda.getTipoPrendas();
 	}
 }

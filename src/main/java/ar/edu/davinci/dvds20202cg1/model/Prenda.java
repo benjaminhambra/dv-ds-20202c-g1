@@ -19,13 +19,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Prenda
- * 
- * @author bhambra
- *
- */
-
 @Entity
 @Table(name = "prendas")
 
