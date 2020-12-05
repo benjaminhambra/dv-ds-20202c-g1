@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "vnt_id")
+@PrimaryKeyJoinColumn(name = "vta_id")
 @DiscriminatorValue("EFECTIVO")
 @Table(name="ventas_efectivo")
 

@@ -1,4 +1,10 @@
 --
+-- Drop Table structure for table ventas_tarjeta
+--
+
+DROP TABLE IF EXISTS ventas_tarjeta;
+
+--
 -- Drop Table structure for table ventas_efectivo
 --
 
@@ -89,4 +95,16 @@ CREATE TABLE ventas_efectivo (
   vta_id bigint NOT NULL,
   PRIMARY KEY (vta_id),
   CONSTRAINT vte_vta_fk FOREIGN KEY (vta_id) REFERENCES ventas (vta_id)
+);
+
+--
+-- Table structure for table ventas_tarjeta
+--
+
+CREATE TABLE ventas_tarjeta (
+  vta_id bigint NOT NULL,
+  vtt_cantidad_cuotas int DEFAULT NULL,
+  vtt_coeficiente  bigint DEFAULT NULL,
+  PRIMARY KEY (vta_id),
+  CONSTRAINT vtt_vta_fk FOREIGN KEY (vta_id) REFERENCES ventas (vta_id)
 );
