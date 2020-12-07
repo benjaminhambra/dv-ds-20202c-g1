@@ -1,5 +1,7 @@
 package ar.edu.davinci.dvds20202cg1.model;
 
+import java.io.Serializable;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -16,9 +18,14 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class VentaEfectivo extends Venta {
+public class VentaEfectivo extends Venta implements Serializable {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1138085581133025351L;
+
+	@Override
     public Double conRecargo(Double importeBase) {
         return importeBase;
     }

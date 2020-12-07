@@ -7,9 +7,13 @@ import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ar.edu.davinci.dvds20202cg1.controller.rest.request.ClienteInsertRequest;
+import ar.edu.davinci.dvds20202cg1.controller.rest.request.ClienteUpdateRequest;
 import ar.edu.davinci.dvds20202cg1.controller.rest.request.PrendaInsertRequest;
 import ar.edu.davinci.dvds20202cg1.controller.rest.request.PrendaUpdateRequest;
+import ar.edu.davinci.dvds20202cg1.controller.rest.response.ClienteResponse;
 import ar.edu.davinci.dvds20202cg1.controller.rest.response.PrendaResponse;
+import ar.edu.davinci.dvds20202cg1.model.Cliente;
 import ar.edu.davinci.dvds20202cg1.model.Prenda;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
@@ -32,36 +36,14 @@ public class OrikaConfiguration {
     public MapperFacade mapper() {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
-        mapperFactory.classMap(Prenda.class, PrendaInsertRequest.class)
-        .byDefault()
-//        .customize(new CustomMapper<Prenda, PrendaInsertRequest>() {
-//            public void mapAtoB(final Prenda prenda, final PrendaInsertRequest prendaInsertRequest, final MappingContext context) {
-//                LOGGER.info(" #### Custom mapping to prendaInsertRequest and prenda #### ");
-//                prenda.setDescripcion(prendaInsertRequest.getDescripcion());
-//                prenda.setTipo(TipoPrenda.buscar(prendaInsertRequest.getTipo()));
-//                prenda.setPrecioBase(prendaInsertRequest.getPrecioBase());
-//            }
-//        })
-        .register();
+        // PRENDA
         
-        
-        mapperFactory.classMap(Prenda.class, PrendaUpdateRequest.class)
-        .byDefault()
-//        .customize(new CustomMapper<Prenda, PrendaUpdateRequest>() {
-//            public void mapBtoA(final Prenda prenda, final PrendaUpdateRequest prendaUpdateRequest, final MappingContext context) {
-//                LOGGER.info(" #### Custom mapping to PrendaUpdateRequest #### ");
-//                prenda.setDescripcion(prendaUpdateRequest.getDescripcion());
-//                prenda.setTipo(TipoPrenda.buscar(prendaUpdateRequest.getTipo()));
-//                prenda.setPrecioBase(prendaUpdateRequest.getPrecioBase());
-//            }
-//        })
-        .register();
-        
-        
+        mapperFactory.classMap(Prenda.class, PrendaInsertRequest.class).byDefault().register();
+        mapperFactory.classMap(Prenda.class, PrendaUpdateRequest.class).byDefault().register();
         mapperFactory.classMap(Prenda.class, PrendaResponse.class)
         .customize(new CustomMapper<Prenda, PrendaResponse>() {
             public void mapAtoB(final Prenda prenda, final PrendaResponse prendaResponse, final MappingContext context) {
-                LOGGER.info(" #### Custom mapping to Prenda and PrendaResponse #### ");
+                LOGGER.info(" #### Custom mapping for Prenda --> PrendaResponse #### ");
                 prendaResponse.setId(prenda.getId());
                 prendaResponse.setDescripcion(prenda.getDescripcion());
                 prendaResponse.setTipo(prenda.getTipo().getDescripcion());
@@ -69,6 +51,11 @@ public class OrikaConfiguration {
             }
         }).register();
 
+        // CLIENTE
+        
+        mapperFactory.classMap(Cliente.class, ClienteInsertRequest.class).byDefault().register();
+        mapperFactory.classMap(Cliente.class, ClienteUpdateRequest.class).byDefault().register();
+        mapperFactory.classMap(Cliente.class, ClienteResponse.class).byDefault().register();
 
         return mapperFactory.getMapperFacade();
     }
