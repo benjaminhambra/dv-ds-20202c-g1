@@ -37,12 +37,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente findById(Long id) {
-        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
-        if (clienteOptional.isPresent()) {
-            return clienteOptional.get();
-        }
-        return null;
+    public Optional<Cliente>  findById(Long id) {
+        return clienteRepository.findById(id);
     }
 
     @Override

@@ -8,6 +8,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -17,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 
 
 @Data
+@NoArgsConstructor(force = true)
 @SuperBuilder
 public class VentaEfectivo extends Venta implements Serializable {
 

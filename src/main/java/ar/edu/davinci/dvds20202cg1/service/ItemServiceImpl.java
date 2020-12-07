@@ -1,5 +1,4 @@
 package ar.edu.davinci.dvds20202cg1.service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -37,12 +36,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item findById(Long id) {
-        Optional<Item> itemOptional = itemRepository.findById(id);
-        if (itemOptional.isPresent()) {
-            return itemOptional.get();
-        }
-        return null;
+    public Optional<Item> findById(Long id) {
+        return itemRepository.findById(id);
     }
 
     @Override

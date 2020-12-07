@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,22 +33,26 @@ import lombok.NoArgsConstructor;
 public class Item implements Serializable {
     
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5175348805501405894L;
+     * 
+     */
+    private static final long serialVersionUID = -904982985155145732L;
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    
     @Column(name = "itm_id")
     private Long id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="itm_vta_id", referencedColumnName="vta_id", nullable = false)
+    @JsonBackReference
+    private Venta venta;
     
     @Column(name = "itm_cantidad")
     private Integer cantidad;
     
     @ManyToOne(targetEntity = Prenda.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="itm_prd_id", referencedColumnName="prd_id")
+    @JoinColumn(name="itm_prd_id", referencedColumnName="prd_id", nullable = false)
     private Prenda prenda;
     
     public BigDecimal importe() {

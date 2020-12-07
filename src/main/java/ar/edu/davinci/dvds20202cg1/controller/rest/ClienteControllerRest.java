@@ -2,6 +2,7 @@ package ar.edu.davinci.dvds20202cg1.controller.rest;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,7 @@ public class ClienteControllerRest extends TiendaAppRest{
      * Listar paginado
      */
     @GetMapping(path = "/clientes")
-    public Page<ClienteResponse> getList(Pageable pageable) {
+    public ResponseEntity<Page<ClienteResponse>> getList(Pageable pageable) {
         
         LOGGER.info("listar todas las clientes paginadas");
         LOGGER.info("Pageable: " + pageable);
@@ -73,7 +74,7 @@ public class ClienteControllerRest extends TiendaAppRest{
             e.printStackTrace();
         }
         
-        return clienteResponse;
+        return new ResponseEntity<>(clienteResponse, HttpStatus.OK);
     }
     
     /**
@@ -82,13 +83,19 @@ public class ClienteControllerRest extends TiendaAppRest{
      * @return retorna el cliente
      */
     @GetMapping(path = "/clientes/{id}")
-    public ClienteResponse getCliente(@PathVariable Long id) {
+    public ResponseEntity<ClienteResponse> getCliente(@PathVariable Long id) {
         LOGGER.info("lista al cliente solicitado");
 
         ClienteResponse clienteResponse = null;
+        Optional<Cliente> clienteOptiona = null;
         Cliente cliente = null;
         try {
-            cliente = clienteService.findById(id);
+            clienteOptiona = clienteService.findById(id);
+            if (clienteOptiona.isPresent()) {
+                cliente  = clienteOptiona.get();
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
@@ -99,7 +106,7 @@ public class ClienteControllerRest extends TiendaAppRest{
             LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
-        return clienteResponse;
+        return new ResponseEntity<>(clienteResponse, HttpStatus.OK);
     }
 
 
@@ -163,7 +170,18 @@ public class ClienteControllerRest extends TiendaAppRest{
             e.printStackTrace();
         }
 
-        clienteModifar = clienteService.findById(id);
+        Optional<Cliente> clienteOptiona = null;
+        try {
+            clienteOptiona = clienteService.findById(id);
+            if (clienteOptiona.isPresent()) {
+                clienteModifar  = clienteOptiona.get();
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
 
         if (Objects.nonNull(clienteModifar)) {
             clienteModifar.setNombre(clienteNuevo.getNombre());
@@ -175,7 +193,7 @@ public class ClienteControllerRest extends TiendaAppRest{
                 return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
 
         // Convertir Cliente en ClienteResponse
