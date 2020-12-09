@@ -2,6 +2,7 @@ package ar.edu.davinci.dvds20202cg1.controller.rest;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,35 +53,33 @@ public class PrendaControllerRest extends TiendaAppRest{
      * Listar paginado
      */
     @GetMapping(path = "/prendas")
-    public Page<PrendaResponse> getList(Pageable pageable) {
-        
-        LOGGER.info("listar todas las prendas paginadas");
-        LOGGER.info("Pageable: " + pageable);
-        
-        Page<PrendaResponse> prendaResponse = null;
-        Page<Prenda> prendas = null;
-        try {
-            prendas = prendaService.list(pageable);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-        }
-        
-        for(Object prenda : prendas) {
-            
-            ((Prenda)prenda).getPrecioBase();
-            
-        }
-        
-        try {
-            prendaResponse = prendas.map(prenda -> mapper.map(prenda, PrendaResponse.class));
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-        }
-        
-        return prendaResponse;
-    }
+	public ResponseEntity<Page<PrendaResponse>> getList(Pageable pageable) {
+		LOGGER.info("listar todas las prendas paginadas");
+		LOGGER.info("Pageable: " + pageable);
+		
+		Page<PrendaResponse> prendaResponse = null;
+		Page<Prenda> prendas = null;
+		
+		try {
+			prendas = prendaService.list(pageable);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		for (Object prenda : prendas) {
+			((Prenda) prenda).getPrecioBase();
+		}
+		
+		try {
+			prendaResponse = prendas.map(prenda -> mapper.map(prenda, PrendaResponse.class));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<>(prendaResponse, HttpStatus.OK);
+	}
     
     /**
      * Buscar prenda por id
@@ -88,25 +87,30 @@ public class PrendaControllerRest extends TiendaAppRest{
      * @return retorna el prenda
      */
     @GetMapping(path = "/prendas/{id}")
-    public PrendaResponse getPrenda(@PathVariable Long id) {
-        LOGGER.info("lista al prenda solicitado");
-
-        PrendaResponse prendaResponse = null;
-        Prenda prenda = null;
-        try {
-            prenda = prendaService.findById(id);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-        }
-        try {
-            prendaResponse = mapper.map(prenda, PrendaResponse.class);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-        }
-        return prendaResponse;
-    }
+	public ResponseEntity<PrendaResponse> getPrenda(@PathVariable Long id) {
+		LOGGER.info("lista al prenda solicitado");
+		PrendaResponse prendaResponse = null;
+		Optional<Prenda> prendaOptional = null;
+		Prenda prenda = null;
+		try {
+			prendaOptional = prendaService.findById(id);
+			if (prendaOptional.isPresent()) {
+				prenda = prendaOptional.get();
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+		try {
+			prendaResponse = mapper.map(prenda, PrendaResponse.class);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(prendaResponse, HttpStatus.OK);
+	}
 
 
     /**
@@ -169,7 +173,19 @@ public class PrendaControllerRest extends TiendaAppRest{
             e.printStackTrace();
         }
 
-        prendaModifar = prendaService.findById(id);
+		Optional<Prenda> prendaOptional = null;
+		
+		try {
+			prendaOptional = prendaService.findById(id);
+			if (prendaOptional.isPresent()) {
+				prendaModifar = prendaOptional.get();
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
 
         if (Objects.nonNull(prendaModifar)) {
             prendaModifar.setDescripcion(prendaNuevo.getDescripcion());

@@ -1,5 +1,7 @@
 package ar.edu.davinci.dvds20202cg1.controller.view;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,71 +25,67 @@ import ar.edu.davinci.dvds20202cg1.model.Prenda;
 
 @Controller
 public class PrendaController extends TiendaApp {
-    private final Logger LOGGER = LoggerFactory.getLogger(PrendaController.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(PrendaController.class);
 
-    
-    @Autowired
-    private PrendaService prendaService;
-    
-    
-    @GetMapping
-    public String viewHomePage(Model model) {
-        LOGGER.info("GET - viewHomePage - /index");
-        return "index";
-    }
-    
-    @GetMapping(path = "prendas/list")
-    public String showPrendaPage(Model model) {
-        LOGGER.info("GET - showPrendaPage  - /prendas/list");
-        
-        Pageable pageable = PageRequest.of(0, 20);
-        Page<Prenda> prendas = prendaService.list(pageable);
-        model.addAttribute("listPrendas", prendas);
+	@Autowired
+	private PrendaService prendaService;
 
-        LOGGER.info("prendas.size: " + prendas.getNumberOfElements());
-        return "prendas/list_prendas";
-    }
-    
-    @GetMapping(path = "/prendas/new")
-    public String showNewPrendaPage(Model model) {
-        LOGGER.info("GET - showNewPrendaPage - /prendas/new");
-        Prenda prenda = new Prenda();
-        model.addAttribute("prenda", prenda);
-        model.addAttribute("tipoPrendas", prendaService.getTipoPrendas());
+	@GetMapping(path = "prendas/list")
+	public String showPrendaPage(Model model) {
+		LOGGER.info("GET - showPrendaPage  - /prendas/list");
 
-        LOGGER.info("prendas: " + prenda.toString());
+		Pageable pageable = PageRequest.of(0, 20);
+		Page<Prenda> prendas = prendaService.list(pageable);
+		model.addAttribute("listPrendas", prendas);
 
-        return "prendas/new_prendas";
-    }
-    
-    @PostMapping(value = "/prendas/save")
-    public String savePrenda(@ModelAttribute("prenda") Prenda prenda) {
-        LOGGER.info("POST - savePrenda - /prendas/save");
-        LOGGER.info("prenda: " + prenda.toString());
-        prendaService.save(prenda);
+		LOGGER.info("prendas.size: " + prendas.getNumberOfElements());
+		return "prendas/list_prendas";
+	}
 
-        return "redirect:/tienda/prendas/list";
-    }
-    
-    @RequestMapping(value = "/prendas/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView showEditPrendaPage(@PathVariable(name = "id") Long prendaId) {
-        LOGGER.info("GET - showEditPrendaPage - /prendas/edit/{id}");
-        LOGGER.info("prenda: " + prendaId);
+	@GetMapping(path = "/prendas/new")
+	public String showNewPrendaPage(Model model) {
+		LOGGER.info("GET - showNewPrendaPage - /prendas/new");
+		Prenda prenda = new Prenda();
+		model.addAttribute("prenda", prenda);
+		model.addAttribute("tipoPrendas", prendaService.getTipoPrendas());
 
-        ModelAndView mav = new ModelAndView("prendas/edit_prendas");
-        Prenda prenda = prendaService.findById(prendaId);
-        mav.addObject("prenda", prenda);
-        mav.addObject("tipoPrendas", prendaService.getTipoPrendas());
-        mav.addObject("tipoPrendaActual", prenda.getTipo());
+		LOGGER.info("prendas: " + prenda.toString());
 
-        return mav;
-    }
+		return "prendas/new_prendas";
+	}
 
-    @RequestMapping(value = "/prendas/delete/{id}", method = RequestMethod.GET)
-    public String deletePrenda(@PathVariable(name = "id") Long prendaId) {
-        LOGGER.info("GET - deletePrenda - /prendas/delete/{id}");
-        LOGGER.info("prenda: " + prendaId);
-        prendaService.delete(prendaId);
-        return "redirect:/tienda/prendas/list";
-    }
+	@PostMapping(value = "/prendas/save")
+	public String savePrenda(@ModelAttribute("prenda") Prenda prenda) {
+		LOGGER.info("POST - savePrenda - /prendas/save");
+		LOGGER.info("prenda: " + prenda.toString());
+		prendaService.save(prenda);
+
+		return "redirect:/tienda/prendas/list";
+	}
+
+	@RequestMapping(value = "/prendas/edit/{id}", method = RequestMethod.GET)
+	public ModelAndView showEditPrendaPage(@PathVariable(name = "id") Long prendaId) {
+		LOGGER.info("GET - showEditPrendaPage - /prendas/edit/{id}");
+		LOGGER.info("prenda: " + prendaId);
+
+		ModelAndView mav = new ModelAndView("prendas/edit_prendas");
+		Optional<Prenda> prendaOptional = prendaService.findById(prendaId);
+		Prenda prenda = null;
+		if (prendaOptional.isPresent()) {
+			prenda = prendaOptional.get();
+			mav.addObject("prenda", prenda);
+			mav.addObject("tipoPrendaActual", prenda.getTipo());
+		}
+		mav.addObject("tipoPrendas", prendaService.getTipoPrendas());
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/prendas/delete/{id}", method = RequestMethod.GET)
+	public String deletePrenda(@PathVariable(name = "id") Long prendaId) {
+		LOGGER.info("GET - deletePrenda - /prendas/delete/{id}");
+		LOGGER.info("prenda: " + prendaId);
+		prendaService.delete(prendaId);
+		return "redirect:/tienda/prendas/list";
+	}
 }

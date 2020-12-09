@@ -1,5 +1,7 @@
 package ar.edu.davinci.dvds20202cg1.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,9 +24,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Cliente {
+public class Cliente implements Serializable{
     
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7963817668866940216L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     
@@ -36,5 +43,8 @@ public class Cliente {
 
     @Column(name = "cli_apellido")
     private String apellido;
-
+    
+    public String getRazonSocial() {
+    	return nombre + " " + apellido;
+    }
 }
