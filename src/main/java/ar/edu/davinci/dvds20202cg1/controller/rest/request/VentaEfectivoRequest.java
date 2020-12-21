@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class VentaEfectivoRequest {
     
 	private Long clienteId;
-	private Integer cantidadCuotas;
 
 }

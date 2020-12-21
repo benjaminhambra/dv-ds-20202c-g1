@@ -45,6 +45,7 @@ public class PrendaController extends TiendaApp {
 	@GetMapping(path = "/prendas/new")
 	public String showNewPrendaPage(Model model) {
 		LOGGER.info("GET - showNewPrendaPage - /prendas/new");
+		
 		Prenda prenda = new Prenda();
 		model.addAttribute("prenda", prenda);
 		model.addAttribute("tipoPrendas", prendaService.getTipoPrendas());

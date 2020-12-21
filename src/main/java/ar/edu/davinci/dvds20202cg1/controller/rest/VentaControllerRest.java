@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.edu.davinci.dvds20202cg1.controller.TiendaAppRest;
 import ar.edu.davinci.dvds20202cg1.controller.rest.request.ItemInsertRequest;
 import ar.edu.davinci.dvds20202cg1.controller.rest.request.ItemUpdateRequest;
+import ar.edu.davinci.dvds20202cg1.controller.rest.response.VentaEfectivoResponse;
 import ar.edu.davinci.dvds20202cg1.controller.rest.response.VentaResponse;
+import ar.edu.davinci.dvds20202cg1.controller.rest.response.VentaTarjetaResponse;
 import ar.edu.davinci.dvds20202cg1.model.Item;
 import ar.edu.davinci.dvds20202cg1.model.Venta;
 import ar.edu.davinci.dvds20202cg1.model.VentaEfectivo;
@@ -116,6 +118,7 @@ public class VentaControllerRest extends TiendaAppRest{
 	* @param ventaResponse
 	* @return
 	*/
+	@PostMapping(path = "/ventas")
 	private ResponseEntity<VentaResponse> grabarVenta(VentaEfectivo venta, VentaResponse ventaResponse) {
 		// Grabar el nuevo Venta
 		try {
@@ -131,6 +134,7 @@ public class VentaControllerRest extends TiendaAppRest{
 		}
 		return new ResponseEntity<>(ventaResponse, HttpStatus.CREATED);
 	}
+
 	
 	/**
 	* Grabar un nuevo item a la venta
